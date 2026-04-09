@@ -28,6 +28,9 @@ public class PedidoConfiguration : IEntityTypeConfiguration<Pedido>
         builder.Property(pedido => pedido.Perda)
             .IsRequired();
 
+        builder.Property(pedido => pedido.MotivoPerda)
+            .HasMaxLength(500);
+
         builder.Property(pedido => pedido.Visivel)
             .IsRequired();
 

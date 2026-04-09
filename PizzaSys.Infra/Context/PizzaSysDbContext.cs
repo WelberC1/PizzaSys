@@ -3,7 +3,7 @@ using PizzaSys.Domain.Entities;
 
 namespace PizzaSys.Infra.Context;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class PizzaSysDbContext(DbContextOptions<PizzaSysDbContext> options) : DbContext(options)
 {
     public DbSet<Usuario> Usuarios => Set<Usuario>();
     public DbSet<Endereco> Enderecos => Set<Endereco>();
@@ -14,7 +14,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PizzaSysDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 }
