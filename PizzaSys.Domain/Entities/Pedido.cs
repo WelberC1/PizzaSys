@@ -25,12 +25,17 @@ namespace PizzaSys.Domain.Entities
         public Guid Id { get; private set; }
         public Guid UsuarioId { get; private set; }
         public DateTime DataCriacao { get; private set; }
+        public DateTime? DataEntrega { get; private set; }
+        public DateTime? DataCancelamento { get; private set; }
         public PedidoStatus Status { get; private set; }
+        public bool Perda { get; private set; }
         public decimal ValorTotal { get; private set; }
         public IReadOnlyCollection<PedidoItem> Itens => _itens.AsReadOnly();
 
         public Usuario? Usuario { get; private set; }
-
+        public Guid EnderecoId { get; private set; }
+        public Endereco? Endereco { get; private set; }
+        public bool Visivel { get; private set; } = true;
         public void AdicionarItem(Produto produto, int quantidade)
         {
             if (produto is null) throw new ArgumentNullException(nameof(produto));
