@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="PizzaSys.Domain/PizzaSys.Domain.csproj" />
+  <Project Path="PizzaSys.Infra/PizzaSys.Infra.csproj" Id="990613c0-316d-4379-954a-a4cee1f0a2de" />
 </Solution>
