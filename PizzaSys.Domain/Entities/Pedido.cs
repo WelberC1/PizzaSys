@@ -11,12 +11,14 @@ namespace PizzaSys.Domain.Entities
 
         private Pedido() { }
 
-        public Pedido(Guid usuarioId)
+        public Pedido(Guid usuarioId, Guid enderecoId)
         {
             if (usuarioId == Guid.Empty) throw new ArgumentException("Cliente invalido.", nameof(usuarioId));
+            if (enderecoId == Guid.Empty) throw new ArgumentException("Endereco invalido.", nameof(enderecoId));
 
             Id = Guid.NewGuid();
             UsuarioId = usuarioId;
+            EnderecoId = enderecoId;
             DataCriacao = DateTime.UtcNow;
             Status = PedidoStatus.Criado;
             ValorTotal = 0;
@@ -29,6 +31,7 @@ namespace PizzaSys.Domain.Entities
         public DateTime? DataCancelamento { get; private set; }
         public PedidoStatus Status { get; private set; }
         public bool Perda { get; private set; }
+        public string MotivoPerda { get; private set; } = string.Empty;
         public decimal ValorTotal { get; private set; }
         public IReadOnlyCollection<PedidoItem> Itens => _itens.AsReadOnly();
 
@@ -61,6 +64,11 @@ namespace PizzaSys.Domain.Entities
             if (!transicaoValida) throw new InvalidOperationException("Transicao de status invalida.");
 
             Status = novoStatus;
+
+            if (novoStatus == PedidoStatus.Entregue)
+            {
+                DataEntrega = DateTime.UtcNow;
+            }
         }
 
         public void Cancelar()
@@ -69,6 +77,16 @@ namespace PizzaSys.Domain.Entities
                 throw new InvalidOperationException("Nao e permitido cancelar pedido apos sair para entrega.");
 
             Status = PedidoStatus.Cancelado;
+            DataCancelamento = DateTime.UtcNow;
+        }
+
+        public void RegistrarPerda(string motivo)
+        {
+            if (string.IsNullOrWhiteSpace(motivo))
+                throw new ArgumentException("Motivo da perda e obrigatorio.", nameof(motivo));
+
+            Perda = true;
+            MotivoPerda = motivo.Trim();
         }
 
         public decimal CalcularCustoTotal() => _itens.Sum(item => item.CustoTotalItem());
